@@ -1,10 +1,10 @@
 from django.urls import path
-from CustomerApp import views
+from ItemApp import views
 
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-                    path('', views.customerApi),
-                    path('/<int:id>', views.customerApi),
+                    path('', views.itemApi),
+                    path('/<int:id>', views.itemApi),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

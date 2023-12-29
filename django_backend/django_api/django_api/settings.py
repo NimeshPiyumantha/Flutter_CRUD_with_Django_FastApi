@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'CustomerApp.apps.CustomerappConfig',
+    'ItemApp.apps.ItemappConfig',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
