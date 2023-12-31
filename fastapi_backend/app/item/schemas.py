@@ -4,7 +4,7 @@ from pydantic import BaseModel , Field
 T = TypeVar('T')
 
 class ItemSchema(BaseModel):
-        i_code:Optional[int]=None
+        code:Optional[int]=None
         description:Optional[str]=None
         unitPrice:Optional[str]=None
         qtyOnHand:Optional[str]=None

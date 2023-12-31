@@ -31,10 +31,10 @@ async def get_all_item_services(db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@routerItem.get("/items/{i_code}")
-async def get_item_service(i_code: int, db: Session = Depends(get_db)):
+@routerItem.get("/items/{code}")
+async def get_item_service(code: int, db: Session = Depends(get_db)):
     try:
-        item = item.crud.get_by_code(db, i_code)
+        item = item.crud.get_by_code(db, code)
         if item is None:
             raise HTTPException(status_code=404, detail="Item not found")
         return create_response("Ok", "200", "Item retrieved successfully", item)
@@ -52,17 +52,17 @@ async def create_item_service(request: RequestItem, db: Session = Depends(get_db
 @routerItem.put("/items")
 async def update_item_service(request: RequestItem, db: Session = Depends(get_db)):
     try:
-        updated_item = item.crud.update(db, i_code=request.parameter.i_code, item=request.parameter)
+        updated_item = item.crud.update(db, code=request.parameter.code, item=request.parameter)
         if updated_item is None:
             raise HTTPException(status_code=404, detail="Item not found")
         return create_response("Ok", "200", "Item updated successfully", updated_item)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@routerItem.delete("/items/{i_code}")
-async def delete_item_service(i_code: int, db: Session = Depends(get_db)):
+@routerItem.delete("/items/{code}")
+async def delete_item_service(code: int, db: Session = Depends(get_db)):
     try:
-        deleted_item = item.crud.delete(db, i_code)
+        deleted_item = item.crud.delete(db, code)
         if deleted_item is None:
             raise HTTPException(status_code=404, detail="Item not found")
         return create_response("Ok", "200", "Item deleted successfully", deleted_item)
