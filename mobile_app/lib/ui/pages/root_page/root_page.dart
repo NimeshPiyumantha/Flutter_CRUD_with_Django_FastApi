@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/ui/pages/customer_page/customer_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_app/ui/pages/customer_page/customer_page_view.dart';
 import 'package:mobile_app/ui/pages/home_page/home_page.dart';
+
+import '../customer_page/customer_page_bloc.dart';
 
 class PosApp extends StatefulWidget {
   const PosApp({
@@ -60,7 +63,10 @@ class _PosAppState extends State<PosApp> {
         body: selectedIndex == 0
             ? const HomePage()
             : selectedIndex == 1
-                ? const CustomerPage() // Replace `Container()` with the desired widget for the `selectedIndex == 1` case.
+                ? BlocProvider(
+                    create: (context) => CustomerPageBloc(context),
+                    child: const CustomerPageView(),
+                  )
                 : null,
       ),
     );

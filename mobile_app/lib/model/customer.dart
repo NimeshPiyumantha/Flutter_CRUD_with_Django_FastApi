@@ -2,13 +2,13 @@ class Customer {
   final int? id;
   final String name;
   final String address;
-  final String? phone;
+  final String phone;
 
   Customer({
     this.id,
     required this.name,
     required this.address,
-    this.phone,
+    required this.phone,
   });
 
   factory Customer.fromMap(Map<String, dynamic> map) {
@@ -20,7 +20,7 @@ class Customer {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
