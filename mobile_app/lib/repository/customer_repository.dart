@@ -8,7 +8,7 @@ import '../model/customer.dart';
 import '../util/db_util.dart';
 
 class CustomerRepository {
-  Future<http.Response> getAllStudents() async {
+  Future<http.Response> getAllCustomer() async {
     final response = await http.get(
       Uri.parse('$baseUrl/customers'),
       headers: <String, String>{
@@ -18,11 +18,10 @@ class CustomerRepository {
     return response;
   }
 
-  Future<void> saveStudent(Customer customer) async {
-    Logger().d('Customer: ${customer.toJson()}');
+  Future<void> saveCustomer(Customer customer) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/customers'),
+        Uri.parse('http://192.168.92.142:8000/api/v1/customers'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -30,14 +29,14 @@ class CustomerRepository {
       );
 
       if (response.statusCode != 201) {
-        Logger().d('Successfully to create Student: ${response.statusCode}');
+        Logger().d('Successfully to create Customer: ${response.statusCode}');
       }
     } catch (error) {
-      Logger().e('Error creating student: $error');
+      Logger().e('Error creating Customer: $error');
     }
   }
 
-  Future<void> updateStudent(Customer customer) async {
+  Future<void> updateCustomer(Customer customer) async {
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/customers'),
@@ -48,14 +47,14 @@ class CustomerRepository {
       );
 
       if (response.statusCode != 201) {
-        Logger().d('Successfully to update Student: ${response.statusCode}');
+        Logger().d('Successfully to update Customer: ${response.statusCode}');
       }
     } catch (error) {
-      Logger().e('Error updating student: $error');
+      Logger().e('Error updating Customer: $error');
     }
   }
 
-  Future<void> deleteStudent(String customerId) async {
+  Future<void> deleteCustomer(int customerId) async {
     try {
       final response = await http.delete(
         Uri.parse('$baseUrl/customers/$customerId'),
@@ -65,10 +64,10 @@ class CustomerRepository {
       );
 
       if (response.statusCode != 201) {
-        Logger().d('Successfully to delete Student: ${response.statusCode}');
+        Logger().d('Successfully to delete Customer: ${response.statusCode}');
       }
     } catch (error) {
-      Logger().e('Error deleting student: $error');
+      Logger().e('Error deleting Customer: $error');
     }
   }
 }

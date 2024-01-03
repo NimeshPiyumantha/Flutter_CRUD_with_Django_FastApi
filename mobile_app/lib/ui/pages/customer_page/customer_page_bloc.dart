@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:mobile_app/model/customer.dart';
 
 import '../../../repository/customer_repository.dart';
@@ -23,6 +25,7 @@ class CustomerPageBloc extends Bloc<CustomerPageEvent, CustomerPageState> {
   FutureOr<void> _deleteCustomer(
       DeleteCustomerEvent event, Emitter<CustomerPageState> emit) async {
     print("delete customer");
+    await CustomerRepository().deleteCustomer(event.idType);
   }
 
   FutureOr<void> _updateCustomer(
@@ -33,25 +36,53 @@ class CustomerPageBloc extends Bloc<CustomerPageEvent, CustomerPageState> {
       address: event.addressType,
       phone: event.phoneType,
     );
-
+    await CustomerRepository().updateCustomer(customer);
     add(GetAllCustomerEvent());
   }
 
   FutureOr<void> _saveCustomer(
       SaveCustomerEvent event, Emitter<CustomerPageState> emit) async {
-        print("save customer");
+    print("save customer");
     final customer = Customer(
-      id: 0,
       name: event.nameType,
       address: event.addressType,
       phone: event.phoneType,
     );
     print(customer);
-    await CustomerRepository().saveStudent(customer);
+    await CustomerRepository().saveCustomer(customer);
     print("save customer1");
     add(GetAllCustomerEvent());
   }
 
   FutureOr<void> _getAllCustomer(
-      GetAllCustomerEvent event, Emitter<CustomerPageState> emit) async {}
+      GetAllCustomerEvent event, Emitter<CustomerPageState> emit) async {
+    try {
+      final response = await CustomerRepository().getAllCustomer();
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+
+        if (responseData.containsKey('data')) {
+          List<dynamic> customerDataList = responseData['data'];
+
+          List<Customer> customerList = [
+            ...customerDataList
+                .map((customerData) => Customer.fromJson(customerData)),
+          ];
+
+          emit(
+            state.clone(
+              customers: customerList,
+            ),
+          );
+        } else {
+          Logger().e('Response does not contain "data" key');
+        }
+      } else {
+        Logger().e('Failed to load students: ${response.statusCode}');
+      }
+    } catch (e) {
+      Logger().e('Error fetching students: $e');
+    }
+  }
 }

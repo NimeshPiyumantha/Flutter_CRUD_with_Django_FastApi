@@ -1,3 +1,4 @@
+
 class Customer {
   final int? id;
   final String name;
@@ -22,7 +23,7 @@ class Customer {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      // 'id': id,
       'name': name,
       'address': address,
       'phone': phone,
@@ -32,5 +33,14 @@ class Customer {
   @override
   String toString() {
     return 'Customer{id: $id, name: $name, address: $address, phone: $phone}';
+  }
+
+  static fromJson(customerData) {
+    return Customer(
+      id: customerData['id'],
+      name: customerData['name'],
+      address: customerData['address'],
+      phone: customerData['phone'],
+    );
   }
 }
